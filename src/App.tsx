@@ -3,6 +3,8 @@ import "./globals.css";
 import SigninForm from "./_auth/forms/SigninForm";
 import { Home } from "./_root/pages";
 import AuthLayout from "./_auth/AuthLayout";
+import RootLayout from "./_root/RootLayout";
+import SignupForm from "./_auth/forms/SignupForm";
 
 const App = () => {
   return (
@@ -10,12 +12,14 @@ const App = () => {
       <Routes>
         {"Public Routes"}
         <Route element={<AuthLayout />}>
-            <Route path="/sign-in" element={SigninForm />} />
-            <Route path="/sign-up" element={SigninForm />} />
+          <Route path="/sign-in" element={<SigninForm />} />
+          <Route path="/sign-up" element={<SignupForm />} />
         </Route>
-        
+
         {"Private Routes"}
-        <Route index element={Home />} />
+        <Route element={<RootLayout />}>
+          <Route index element={<Home />} />
+        </Route>
       </Routes>
     </main>
   );
