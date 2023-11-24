@@ -3,7 +3,6 @@ import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -16,8 +15,10 @@ import { SignupValidation } from "@/lib/validation";
 import { Loader } from "lucide-react";
 import { Link } from "react-router-dom";
 import { createUserAccount } from "@/lib/appwrite/api";
+import { useToast } from "@/components/ui/use-toast";
 
 const SignupForm = () => {
+  const { toast } = useToast();
   const isLoading = false;
   // 1. Define your form.
   const form = useForm<z.infer<typeof SignupValidation>>({
@@ -33,7 +34,14 @@ const SignupForm = () => {
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
-    console.log(newUser);
+    if (!newUser) {
+      return toast({
+        title: "Sign up failed. Please try again.",
+        description: "Friday, February 10, 2023 at 5:57 PM",
+      });
+    }
+
+    // const session = await signInAccount()
   }
   return (
     <Form {...form}>
