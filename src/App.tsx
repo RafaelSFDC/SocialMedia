@@ -1,11 +1,21 @@
 import { Routes, Route } from "react-router-dom";
 import "./globals.css";
 import SigninForm from "./_auth/forms/SigninForm";
-import { Home } from "./_root/pages";
+import {
+  AllUsers,
+  CreatePost,
+  EditPost,
+  Home,
+  PostDetails,
+  Profile,
+  Saved,
+  UpdateProfile,
+} from "./_root/pages";
 import AuthLayout from "./_auth/AuthLayout";
 import RootLayout from "./_root/RootLayout";
 import SignupForm from "./_auth/forms/SignupForm";
 import { Toaster } from "@/components/ui/toaster";
+import Explore from "./_root/pages/Explore";
 
 const App = () => {
   return (
@@ -20,6 +30,14 @@ const App = () => {
         {"Private Routes"}
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
+          <Route path="/explore" element={<Explore />} />
+          <Route path="/saved" element={<Saved />} />
+          <Route path="/all-users" element={<AllUsers />} />
+          <Route path="/create-post" element={<CreatePost />} />
+          <Route path="/update-post/:id" element={<EditPost />} />
+          <Route path="/posts/:id" element={<PostDetails />} />
+          <Route path="/profile/:id/*" element={<Profile />} />
+          <Route path="/update-rofile/:id" element={<UpdateProfile />} />
         </Route>
       </Routes>
       <Toaster />
