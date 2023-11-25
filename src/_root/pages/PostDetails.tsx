@@ -2,16 +2,34 @@ import Loader from "@/components/shared/Loader";
 import PostStats from "@/components/shared/PostStats";
 import { Button } from "@/components/ui/button";
 import { useUserContext } from "@/context/AuthContext";
-import { useGetPostById } from "@/lib/react-query/queriesAndMutations";
+import {
+  useDeletePost,
+  useGetPostById,
+  useGetUserPosts,
+} from "@/lib/react-query/queriesAndMutations";
 import { formatDateString } from "@/lib/utils";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 
 const PostDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const { user } = useUserContext();
   const { data: post, isPending } = useGetPostById(id || "");
 
-  const handleDeletePost = () => {};
+  const { data: userPosts, isLoading: isUserPostLoading } = useGetUserPosts(
+    post?.creator.$id
+  );
+  const { mutate: deletePost } = useDeletePost();
+
+  const relatedPosts = userPosts?.documents.filter(
+    (userPost) => userPost.$id !== id
+  );
+
+  const handleDeletePost = () => {
+    deletePost({ postId: id || "", imageId: post?.imageId });
+    navigate(-1);
+  };
+
   return (
     <div className="post_details-container">
       {isPending ? (

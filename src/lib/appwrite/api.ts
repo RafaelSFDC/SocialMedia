@@ -172,6 +172,25 @@ export async function deleteFile(fileId: string) {
   }
 }
 
+// ============================== GET USER'S POST
+export async function getUserPosts(userId?: string) {
+  if (!userId) return;
+
+  try {
+    const post = await databases.listDocuments(
+      appwriteConfig.databaseId,
+      appwriteConfig.postCollectionId,
+      [Query.equal("creator", userId), Query.orderDesc("$createdAt")]
+    );
+
+    if (!post) throw Error;
+
+    return post;
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 export async function getRecentPosts() {
   const posts = await databases.listDocuments(
     appwriteConfig.databaseId,
